@@ -1,0 +1,21 @@
+{
+    "name": "isl_poo_exe4",
+    "description":"La description de ma librairie",
+    "License":"WTF",
+    "Authors":[
+        {
+            "name":"iracanyes",
+            "email": "iracanyes@gmail.com"
+        }
+    ],
+    "require":{
+        "fzaninotto/faker":"dev-master",
+        "monolog/monolog":"dev-master"
+    },
+    "autoload":{
+        "psr-4":{
+            "ISL\\":"./src"
+        }
+    },
+    "minimum-stability":"dev"
+}

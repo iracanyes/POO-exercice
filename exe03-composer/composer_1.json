@@ -1,0 +1,17 @@
+{
+    "name": "exe03-composer_namespaces_autoload",
+    "license":"WTF...",
+    "authors":[{
+        "name":"iracanyes",
+        "email":"iracanyes@gmail.com"
+    }],
+    "require":{
+        "fzaninotto/faker":"dev-master"
+    },
+    "autoload":{
+        "psr-4":{
+            "ISL\\":"./src"
+        }
+    }
+    
+}

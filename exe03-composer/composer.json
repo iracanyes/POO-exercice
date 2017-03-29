@@ -1,0 +1,21 @@
+{
+    "name": "iracanyes",
+    "description":"La description de ma librairie",
+    "License":"WTF",
+    "Authors":[
+        {
+            "name":"iracanyes",
+            "email": "iracanyes@gmail.com"
+        }
+    ],
+    "require":{
+        "fzaninotto/faker":"1.*",
+        "monolog/monolog":"1.22.*"
+    },
+    "autoload":{
+        "psr-4":{
+            "ISL\\":"./src"
+        }
+    },
+    "minimum-stability":"dev"
+}
