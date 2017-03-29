@@ -11,6 +11,7 @@ use ISL\Manager\PersonneManager;
 
 $faker = Faker\Factory::create("fr_BE");
 $nbre= isset($_POST["nombre"]) ? $_POST["nombre"] : 1;
+
 ?>
 <!DOCTYPE html>
 <!--
@@ -39,6 +40,9 @@ and open the template in the editor.
                 <?php
                 var_dump(PersonneManager::generate($faker,$nbre));
                 ?>
+            </pre>
+            <pre>
+                <?php var_dump($faker);?>
             </pre>
             <table>
                 

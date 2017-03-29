@@ -3,7 +3,8 @@ require_once __DIR__."/vendor/autoload.php";
 use ISL\Manager\PersonneManager;
 $nombre=  isset($_POST["nombre"])?$_POST["nombre"]: 2;
 $mon_manager = new PersonneManager();
-$groupe=$mon_manager::create($nombre);
+$groupe=PersonneManager::create($nombre);
+//$groupe=$mon_manager::create($nombre); ?fonctionne aussi?
 ?>
 <!DOCTYPE html>
 <!--
@@ -14,7 +15,7 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title></title>
+        <title>POO Exercice 03 - Composer, namespace et autoloading</title>
     </head>
     <body>
         <div id="main">

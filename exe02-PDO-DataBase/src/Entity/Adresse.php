@@ -5,16 +5,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-namespace ISL\POO\exe2\Adresse;
+namespace ISL\Entity;
 
 class Adresse {
+    private $adresseId;
     private $rue;
     private $numero;
     private $localite;
     private $codePostal;
     private $pays;
     
-    public function getRue() {
+    function getAdresseId() {
+        return $this->adresseId;
+    }
+
+    function setAdresseId($adresseId) {
+        $this->adresseId = $adresseId;
+    }
+
+        public function getRue() {
         return $this->rue;
     }
 
