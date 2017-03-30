@@ -122,7 +122,7 @@ class AdresseManager{
             }
             //Création table (associatif: nomColonne=>valeurChamp)de résultat 
             $data=[];
-            while($row=$requetePrepare->fetch(PDO::FETCH_ASSOC)){
+            foreach($requetePrepare->fetch(PDO::FETCH_ASSOC) as $row){
                 print_r($row);
                 $data[]=$row;
             }

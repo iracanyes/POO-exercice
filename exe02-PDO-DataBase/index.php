@@ -104,14 +104,13 @@ include_once 'controler/adresse.php';
                 </tr>
                 
                     <?php 
-                    if(isset($resultat)){
-                        for($i=0; $i<count($resultat);$i++){
-                            echo "<tr>";
-                            foreach($resultat[$i] as $key => $value){
+                    if(isset($resultat) && count($resultat) > 1){
+                            echo "</tr>";
+                            foreach($resultat as $key => $value){
                                 echo  "<td>".$value."</td>";
                             }
                             echo "</tr>";
-                        }
+                        
                     }
                     ?>
                 

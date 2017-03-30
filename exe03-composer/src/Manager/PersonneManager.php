@@ -1,9 +1,7 @@
 <?php
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Contenu : .
  */
 
 /**
@@ -13,35 +11,86 @@
  */
 
 namespace ISL\Manager;
+
 use Faker\Factory;
-use Faker\Provider\fr_BE\Person;
-use Faker\Provider\fr_BE\Address;
+
 use ISL\Entity\Personne;
+
 class PersonneManager {
+    private $dsn="mysql:host=localhost;dbname=isl_POO_test";
+    private $user="isl_iracanyes";
+    private $password="";
+    private $connection;
+    private $personnes;
     
-    public $personnes = [];
-    static public function create($nombre) {
+    public function getDsn() {
+        return $this->dsn;
+    }
+
+    public function getUser() {
+        return $this->user;
+    }
+
+    public function getPassword() {
+        return $this->password;
+    }
+
+    public function getConnection() {
+        return $this->connection;
+    }
+    
+    
+    public function getPersonnes() {
+        return $this->personnes;
+    }
+    
+    public function setDsn($dsn) {
+        $this->dsn = $dsn;
+    }
+
+    public function setUser($user) {
+        $this->user = $user;
+    }
+
+    public function setPassword($password) {
+        $this->password = $password;
+    }
+
+    public function setConnection($connection) {
+        $this->connection = $connection;
+    }
+    
+    public function setPersonnes($personne) {
         
+        $this->personnes=$personne;
+        
+    }
+        
+    public function create(int $nombre) {
+        $data=[];
         for($i=0;$i<$nombre;$i++){
             $faker = Factory::create("fr_BE");
             //print_r($faker);
-            ${"person".$i}= new Personne();
+            $person="person".$i;
+            $$person= new Personne();
             
             
-            ${"person".$i}->setNom($faker->firstName);
+            $$person->setNom($faker->firstName);
             
-            ${"person".$i}->setPrenom($faker->lastName);
-            ${"person".$i}->setAdresse($faker->streetAddress);
-            ${"person".$i}->setVille($faker->city);
-            ${"person".$i}->setCodePostal($faker->postcode);
-            ${"person".$i}->setPays($faker->country);
+            $$person->setPrenom($faker->lastName);
+            $$person->setAdresse($faker->streetAddress);
+            $$person->setVille($faker->city);
+            $$person->setCodePostal($faker->postcode);
+            $$person->setPays($faker->country);
             //le faker "bs" ne fonctionne pas
-            ${"person".$i}->setSociete($faker->company);
-            ${"person".$i}->__toString();
-            $personnes[]=${"person".$i};
+            $$person->setSociete($faker->company);
+            //$$person->__toString();
+            $data[$person]=$$person;
             
             //Découpage adresse
         }
-        return $personnes;
+        $this->setPersonnes($data);
+        return $data;
     }
+    
 }
