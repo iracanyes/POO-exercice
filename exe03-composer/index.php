@@ -77,7 +77,65 @@ and open the template in the editor.
                 isset($groupe)? print_r($groupe): "Une erreur est survenue";
                 ?>
             </pre>    
-            
+            <form id="crud" action="controler/personne.php" method="POST"  autocomplete="true">
+                <fieldset>
+                    <legend>Personne</legend>
+                    <fieldset>
+                        <legend>Type d'échange</legend>
+                        <label for="crud">
+                            Action sur la table "personne" : <br />
+                            <input type="radio" name='crud' value='create' /> Confirmez l'ajout des personnes <br />
+                            <input type="radio" name='crud' value='read' /> Affichez une personne(id>0) ou toute la table (id=0) <br />
+                            <input type="radio" name='crud' value='update' /> Mise à jour d'une personne via son ID <br />
+                            <input type="radio" name='crud' value='delete' /> Supprimer une personne via son ID <br />
+                        </label>
+                        <label for="adresseId">
+                            Personne ID:
+                            <input type="number" id="personId" name="personId" min='0' max='10'  value="<?php echo $personId;?>"/>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Information de la personne</legend>
+                        
+                        <label for="nom">
+                            Nom:
+                            <input type="text" id="nom" name="nom" value="<?php echo $nom;?>"/>
+                        </label>
+                        <label for="prenom">
+                            Prénom:
+                            <input type="text" id="prenom" name="prenom" value="<?php echo $prenom;?>"/>
+                        </label><br />
+                        <label for="adresse">
+                            Adresse:
+                            <input type="text" id="adresse" name="adresse" value="<?php echo $adresse;?>"/>
+                        </label>
+                        <br />
+                        <label for="ville">
+                            Ville:
+                            <input type="text" id="ville" name="ville" value="<?php echo $ville;?>"/>
+                        </label>
+                        
+                        <label for="codePostal">
+                            Code postal:
+                            <input type="number" min="1000" max="9999"  id="codePostal" name="codePostal" value="<?php echo $codePostal;?>"/>
+                        </label>
+                        <br />
+                        <label for="pays">
+                            Pays :
+                            <input type="text" id="pays" name="pays" value="<?php echo $pays;?>"/>
+                        </label>
+                        <br />
+                         <label for="societe">
+                            Société :
+                            <input type="text" id="societe" name="societe" value="<?php echo $societe;?>"/>
+                        </label>
+                    </fieldset>
+                    
+                </fieldset>
+                
+                
+                <input type="submit" name="submit" value="Envoyer" />
+            </form>
             
         </div>
         

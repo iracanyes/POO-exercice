@@ -21,7 +21,7 @@ class PersonneManager {
     private $user="isl_iracanyes";
     private $password="";
     private $connection;
-    private $personnes;
+    private $personnes=[];
     
     public function getDsn() {
         return $this->dsn;
@@ -66,18 +66,18 @@ class PersonneManager {
         
     }
         
-    public function create(int $nombre) {
+    static public function create(int $nombre) {
         $data=[];
         for($i=0;$i<$nombre;$i++){
             $faker = Factory::create("fr_BE");
-            //print_r($faker);
+            
             $person="person".$i;
             $$person= new Personne();
             
             
-            $$person->setNom($faker->firstName);
+            $$person->setNom($faker->lastName);
             
-            $$person->setPrenom($faker->lastName);
+            $$person->setPrenom($faker->firstName);
             $$person->setAdresse($faker->streetAddress);
             $$person->setVille($faker->city);
             $$person->setCodePostal($faker->postcode);
@@ -89,7 +89,7 @@ class PersonneManager {
             
             //Découpage adresse
         }
-        $this->setPersonnes($data);
+        //self::setPersonnes($data);
         return $data;
     }
     
