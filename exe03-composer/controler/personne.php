@@ -12,6 +12,7 @@ $groupe=PersonneManager::create($nombre);
 //Données de formulaires
 $crud= isset($_POST['crud']) ? $_POST['crud'] : "";
 
+$id=isset($_POST["id"]) ? $_POST["id"] : 0;
 $nom= isset($_POST['nom']) ? $_POST['nom'] : "";
 $prenom= isset($_POST['prenom']) ? $_POST['prenom'] : "";
 $adresse= isset($_POST['adresse']) ? $_POST['adresse'] : "";
@@ -22,14 +23,14 @@ $societe= isset($_POST['societe']) ? $_POST['societe'] : "";
 $submit= isset($_POST['submit']) ? $_POST['submit'] : "";
 
 switch($crud){
-    case "create":
+    case "read":
         
         break;
     case "create":
         break;
-    case "create":
+    case "update":
         break;
-    case "create":
+    case "delete":
         break;
 }
 

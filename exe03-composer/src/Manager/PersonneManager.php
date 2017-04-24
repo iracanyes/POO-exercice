@@ -13,7 +13,7 @@
 namespace ISL\Manager;
 
 use Faker\Factory;
-
+use \PDO;
 use ISL\Entity\Personne;
 
 class PersonneManager {
@@ -56,10 +56,21 @@ class PersonneManager {
         $this->password = $password;
     }
 
-    public function setConnection($connection) {
-        $this->connection = $connection;
+    private function setConnection() {
+        try{
+            $conn= new PDO($this->dsn,$this->user, $this->password);
+            $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+            $this->connection=$conn;
+        }catch(PDOException $e){
+            throw $e;
+        }
     }
     
+    public function __construct() {
+        
+        $this->setConnection();
+        
+    }
     public function setPersonnes($personne) {
         
         $this->personnes=$personne;
@@ -92,5 +103,58 @@ class PersonneManager {
         //self::setPersonnes($data);
         return $data;
     }
-    
+    public function insertPersonne(Personne $data){
+        
+        
+        try{
+            $conn= $this->getConnection();
+            
+            $conn->beginTransaction();
+            
+            //Requête SQL
+            $sql="INSERT INTO isl_POO_test.personne(personne_id, nom, prenom, adresse, codePostal, pays, societe) VALUES";
+            
+            
+            
+            if(count($data)>1){
+                //Insertion multiple
+                $cpt=0;
+                foreach($data as $key=> $value){
+                    $sql.="(:nom".$cpt.", :prenom".$cpt.", :adresse".$cpt.", :cp".$cpt.", :pays".$cpt.", :societe".$cpt.")";
+                    
+                    
+                    $insertData[":nom".$cpt]=$data->getNom();
+                    $insertData[":prenom".$cpt]=$data->getPrenom();
+                    $insertData[":adresse".$cpt]=$data->getAdresse();
+                    $insertData[":cp".$cpt]=$data->getCodePostal();
+                    $insertData[":pays".$cpt]=$data->getPays();
+                    $insertData[":societe".$cpt]=$data->getSociete();
+                    
+                    $cpt++;
+                }
+                $requetePrepareMulti=$conn->prepare($sql);
+                $requetePrepareMulti->execute($insertData);
+            }else{
+                //Insertion unique
+                $sql.="(:personne_id, :nom, :prenom, :adresse, :cp, :pays, :societe)";
+                $requetePrepare=$conn->prepare($sql);
+                $requetePrepare->execute([
+                    ":nom"=>$nom,
+                    ":prenom"=>$prenom,
+                    ":adresse"=>$adresse,
+                    ":cp"=>$cp,
+                    ":pays"=>$pays,
+                    ":societe"=>$societe,
+                ]);
+            }
+            
+            //Définir la transaction comme définitif
+            $conn->commit();
+            
+        }catch(PDOException $e){
+            //Si échec, annuler la transaction avec la DB
+            $conn->rollback();
+            throw $e;
+        }
+    }
 }
