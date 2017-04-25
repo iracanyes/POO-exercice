@@ -111,11 +111,14 @@ class AdresseManager{
                     $requetePrepare->execute([":adresseId"=>$id]);
                     break;
             
-                case $id == 0:
+                case 0:
                     echo "ok";
                     $sql1="SELECT * FROM Adresse ORDER BY adresse_id";
                     $requetePrepare= $conn->query($sql1);
-                    var_dump($requetePrepare);
+                    
+                    if(DEBUG){
+                        var_dump($requetePrepare);
+                    }
                     
                     break;
                 

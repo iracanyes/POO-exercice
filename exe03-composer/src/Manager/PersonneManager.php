@@ -107,12 +107,13 @@ class PersonneManager {
         
         
         try{
+            
             $conn= $this->getConnection();
             
             $conn->beginTransaction();
             
             //Requête SQL
-            $sql="INSERT INTO isl_POO_test.personne(personne_id, nom, prenom, adresse, codePostal, pays, societe) VALUES";
+            $sql="INSERT INTO isl_POO_test.Personne(personne_id, nom, prenom, adresse, codePostal, pays, societe) VALUES";
             
             
             
@@ -120,15 +121,15 @@ class PersonneManager {
                 //Insertion multiple
                 $cpt=0;
                 foreach($data as $key=> $value){
-                    $sql.="(:nom".$cpt.", :prenom".$cpt.", :adresse".$cpt.", :cp".$cpt.", :pays".$cpt.", :societe".$cpt.")";
+                    $sql.="(:personne_id".$cpt.", :nom".$cpt.", :prenom".$cpt.", :adresse".$cpt.", :cp".$cpt.", :pays".$cpt.", :societe".$cpt.")";
                     
-                    
-                    $insertData[":nom".$cpt]=$data->getNom();
-                    $insertData[":prenom".$cpt]=$data->getPrenom();
-                    $insertData[":adresse".$cpt]=$data->getAdresse();
-                    $insertData[":cp".$cpt]=$data->getCodePostal();
-                    $insertData[":pays".$cpt]=$data->getPays();
-                    $insertData[":societe".$cpt]=$data->getSociete();
+                    $insertData[":personne_id".$cpt]=$conn->lastInsertId()+$cpt;
+                    $insertData[":nom".$cpt]=$value->getNom();
+                    $insertData[":prenom".$cpt]=$value->getPrenom();
+                    $insertData[":adresse".$cpt]=$value->getAdresse();
+                    $insertData[":cp".$cpt]=$value->getCodePostal();
+                    $insertData[":pays".$cpt]=$value->getPays();
+                    $insertData[":societe".$cpt]=$value->getSociete();
                     
                     $cpt++;
                 }
@@ -139,22 +140,201 @@ class PersonneManager {
                 $sql.="(:personne_id, :nom, :prenom, :adresse, :cp, :pays, :societe)";
                 $requetePrepare=$conn->prepare($sql);
                 $requetePrepare->execute([
-                    ":nom"=>$nom,
-                    ":prenom"=>$prenom,
-                    ":adresse"=>$adresse,
-                    ":cp"=>$cp,
-                    ":pays"=>$pays,
-                    ":societe"=>$societe,
+                    ":personne_id"=>$conn->lastInsertId(),
+                    ":nom"=>$data->getNom(),
+                    ":prenom"=>$data->getPrenom(),
+                    ":adresse"=>$data->getAdresse(),
+                    ":cp"=>$data->getCodePostal(),
+                    ":pays"=>$data->getPays(),
+                    ":societe"=>$data->getSociete()
                 ]);
             }
             
             //Définir la transaction comme définitif
             $conn->commit();
             
+            $conn=null;
         }catch(PDOException $e){
             //Si échec, annuler la transaction avec la DB
             $conn->rollback();
             throw $e;
         }
+    }
+    
+    public function affichePersonne(int $id) {
+        try{
+            $conn=$this->getConnection();
+            
+            $conn->beginTransaction();
+            
+            switch($id){
+                case $id>0:
+                    $sql="SELECT * FROM Personne WHERE personne_id= :personne_id";
+                    
+                    $requetePrepare=$conn->prepare($sql);
+                    $requetePrepare->execute([":personne_id"=>$id]);
+                    
+                    
+                    $data=[];
+                    while($donneeDB=$requetePrepare->fetch(PDO::FETCH_ASSOC)){
+                        if(DEBUG){
+                            echo "Requête préparé:";
+                            var_dump($requetePrepare);
+                        }
+
+                        $data[]=$donneeDB;
+                        $conn=null;
+                        if(DEBUG){
+                            echo "Donnée serveur DB:";
+                            var_dump($data);
+                        }
+                        return $data;
+                    }
+                    break;
+                
+                case 0:
+                    $sql="SELECT * FROM Personne ORDER BY personne_id";
+                    
+                    $requetePrepare=$conn->query($sql);
+                    $data=[];
+                    while($ligneDB=$requetePrepare->fetch(PDO::FETCH_ASSOC)){
+                        foreach($ligneDB as $key=>$value){
+                            //$data[]
+                        }
+                    }
+                    break;
+            }
+            //table des reponses DB
+            $data=[];
+            if()
+            
+        }catch(PDOException $e){
+            
+            $conn->rollback();
+            
+            throw $e;
+        }
+    }
+    
+    public function updatePersonne(int $id=-1,Personne $data) {
+        
+        try{
+            $conn=$this->getConnection();
+            
+            $conn->beginTransaction();
+            
+            if($id !== -1 ){
+                $sql="UPDATE Personne SET "
+                        . "nom= :nom,"
+                        . "prenom= :prenom,"
+                        . "adresse= :adresse,"
+                        . "codePostal= :cp,"
+                        . "pays= :pays,"
+                        . "societe= :societe "
+                        . "WHERE personne_id= :personne_id";
+                
+                $requetePrepare=$conn->prepare($sql);
+                
+                $requetePrepare->execute([
+                    ":nom"=>$data->getNom(),
+                    ":prenom"=>$data->getPrenom(),
+                    ":adresse"=>$data->getAdresse(),
+                    ":cp"=>$data->getCodePostal(),
+                    ":pays"=>$data->getPays(),
+                    ":societe"=>$data->getSociete()
+                    
+                ]);
+                
+                $conn->commit();
+                $conn=null;
+            }
+            
+            $conn->commit();
+        }catch(PDOException $e){
+            
+            $conn->rollback();
+            
+            throw $e;
+        }
+    }
+    
+    public function deletePersonne(int $id) {
+        try{
+            $conn=  $this->getConnection();
+            
+            $conn->beginTransaction();
+            
+            if($id > 0){
+                $sql="DELETE FROM Personne WHERE personne_id= :personne_id";
+                $requetePrepare=$conn->prepare($sql);
+                
+                $requetePrepare->execute([":personne_id"=>$id]);
+                
+                $conn->commit();
+                $conn=null;
+            }
+        }catch(PDOException $e){
+            
+            $conn->rollback();
+            throw $e;
+        }
+    }
+    
+    private function securiteInput(Personne $data){
+        
+        
+        $flags="ENT_QUOTES";
+        $charSet="UTF-8";
+        
+        if(count($data)>1){
+            $tab=[];
+            foreach($data as $key=>$value){
+                //Nom
+                $nom=  htmlentities($value->getNom(), $flags,$charSet);
+                $value->setNom($nom);
+                //Prénom
+                $prenom=  htmlentities($value->getPrenom(), $flags,$charSet);
+                $value->setPrenom($prenom);
+                //Adresse
+                $adresse=  htmlentities($value->getAdresse(), $flags,$charSet);
+                $value->setAdresse($adresse);
+                //Code postal
+                $codePostal=  htmlentities($value->getCodePostal(), $flags,$charSet);
+                $value->setCodePostal($codePostal);
+                
+                //Pays
+                $pays=  htmlentities($value->getPays(), $flags,$charSet);
+                $value->setPays($pays);
+                //Societe
+                $societe=  htmlentities($value->getSociete(), $flags,$charSet);
+                $value->setSociete($societe);
+                
+                $tab[$key]=$value;
+            }
+            return $tab;
+        }else{
+            //Nom
+            $nom=  htmlentities($data->getNom(), $flags,$charSet);
+            $data->setNom($nom);
+            //Prénom
+            $prenom=  htmlentities($data->getPrenom(), $flags,$charSet);
+            $data->setPrenom($prenom);
+            //Adresse
+            $adresse=  htmlentities($data->getAdresse(), $flags,$charSet);
+            $data->setAdresse($adresse);
+            //Code postal
+            $codePostal=  htmlentities($data->getCodePostal(), $flags,$charSet);
+            $data->setCodePostal($codePostal);
+
+            //Pays
+            $pays=  htmlentities($data->getPays(), $flags,$charSet);
+            $data->setPays($pays);
+            //Societe
+            $societe=  htmlentities($data->getSociete(), $flags,$charSet);
+            $data->setSociete($societe);
+
+            return $data;
+        }
+        
     }
 }

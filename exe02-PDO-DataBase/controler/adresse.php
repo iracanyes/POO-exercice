@@ -3,6 +3,10 @@
 /* 
  * Contenu: 
  */
+define("DEBUG", true);
+if(DEBUG === true){
+    ini_set("display_errors", 1);
+}
 //Définition des classes utilisées et leur espace de nom 
 use ISL\Entity\Adresse;
 use ISL\AdresseManager\AdresseManager;

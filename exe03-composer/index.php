@@ -1,6 +1,11 @@
 <?php
 //Autoriser l'affichage des erreurs en développement
-ini_set("display_errors", 1);
+
+define("DEBUG", true);
+
+if(DEBUG === true){
+    ini_set("display_errors", 1);
+}
 
 require_once __DIR__."/vendor/autoload.php";
 
@@ -77,7 +82,7 @@ and open the template in the editor.
                 isset($groupe)? print_r($groupe): "Une erreur est survenue";
                 ?>
             </pre>    
-            <form id="crud" action="controler/personne.php" method="POST"  autocomplete="true">
+            <form id="crud" action="#" method="POST"  autocomplete="true">
                 <fieldset>
                     <legend>Personne</legend>
                     <fieldset>
@@ -110,10 +115,6 @@ and open the template in the editor.
                             <input type="text" id="adresse" name="adresse" value="<?php echo $adresse;?>"/>
                         </label>
                         <br />
-                        <label for="ville">
-                            Ville:
-                            <input type="text" id="ville" name="ville" value="<?php echo $ville;?>"/>
-                        </label>
                         
                         <label for="codePostal">
                             Code postal:
@@ -136,6 +137,38 @@ and open the template in the editor.
                 
                 <input type="submit" name="submit" value="Envoyer" />
             </form>
+            <table>
+                <caption>Groupe aléatoire</caption>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Adresse</th>
+                        <th>Code postal</th>
+                        <th>Pays</th>
+                        <th>Société</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <?php 
+                    var_dump($groupeDB);
+                    if(isset($groupeDB)){
+                        foreach($groupeDB as $key=>$value){
+                            echo "<tr>"
+                                    . "<td>".$value["nom"]."</td>"
+                                    . "<td>".$value["prenom"]."</td>"
+                                    . "<td>".$value["adresse"]."</td>"
+                                    . "<td>".$value["codePostal"]."</td>"
+                                    . "<td>".$value["pays"]."</td>"
+                                    . "<td>".$value["societe"]."</td>"
+                                . "</tr>";
+                        }
+                    }
+                        
+                    ?>
+                </tbody>
+            </table>
             
         </div>
         
