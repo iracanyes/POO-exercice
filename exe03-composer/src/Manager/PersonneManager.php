@@ -156,19 +156,23 @@ class PersonneManager {
             $conn=null;
         }catch(PDOException $e){
             //Si échec, annuler la transaction avec la DB
-            $conn->rollback();
+            if($conn->inTransaction()){
+                $conn->rollback();
+            }
             throw $e;
         }
     }
     
-    public function affichePersonne(int $id) {
+    public function affichePersonne($id=-1) {
+        
         try{
             $conn=$this->getConnection();
             
             $conn->beginTransaction();
             
+            echo 'Valeur ID='+$id+"<br />";
             switch($id){
-                case $id>0:
+                case ($id>0):
                     $sql="SELECT * FROM Personne WHERE personne_id= :personne_id";
                     
                     $requetePrepare=$conn->prepare($sql);
@@ -184,6 +188,7 @@ class PersonneManager {
 
                         $data[]=$donneeDB;
                         $conn=null;
+                        
                         if(DEBUG){
                             echo "Donnée serveur DB:";
                             var_dump($data);
@@ -192,38 +197,48 @@ class PersonneManager {
                     }
                     break;
                 
-                case 0:
+                default:
+                    echo "ok <br />";
                     $sql="SELECT * FROM Personne ORDER BY personne_id";
                     
-                    $requetePrepare=$conn->query($sql);
+                    $requetePrepare=$conn->prepare($sql);
+                    $requetePrepare->execute();
+                    
+                    if(DEBUG){
+                            echo "Requête préparé:";
+                            var_dump($requetePrepare);
+                    }
                     $data=[];
                     while($ligneDB=$requetePrepare->fetch(PDO::FETCH_ASSOC)){
-                        foreach($ligneDB as $key=>$value){
-                            //$data[]
-                        }
+                        $data[]=$ligneDB;
                     }
+                    
+                    return $data;
                     break;
             }
             //table des reponses DB
             $data=[];
-            if()
+            //if()
             
         }catch(PDOException $e){
-            
-            $conn->rollback();
+            if($conn->inTransaction()){
+                $conn->rollback();
+            }  
             
             throw $e;
         }
     }
     
-    public function updatePersonne(int $id=-1,Personne $data) {
+    public function updatePersonne($id=-1,Personne $data) {
         
         try{
             $conn=$this->getConnection();
             
             $conn->beginTransaction();
             
-            if($id !== -1 ){
+            $dernierInsert=$conn->lastInsertId();
+            echo $dernierInsert;
+            if($id>0){
                 $sql="UPDATE Personne SET "
                         . "nom= :nom,"
                         . "prenom= :prenom,"
@@ -241,7 +256,8 @@ class PersonneManager {
                     ":adresse"=>$data->getAdresse(),
                     ":cp"=>$data->getCodePostal(),
                     ":pays"=>$data->getPays(),
-                    ":societe"=>$data->getSociete()
+                    ":societe"=>$data->getSociete(),
+                    ":personne_id"=>$data->getPersonneId()
                     
                 ]);
                 
@@ -249,10 +265,12 @@ class PersonneManager {
                 $conn=null;
             }
             
-            $conn->commit();
+            
         }catch(PDOException $e){
             
-            $conn->rollback();
+            if($conn->inTransaction()){
+                $conn->rollback();
+            }
             
             throw $e;
         }
@@ -275,7 +293,9 @@ class PersonneManager {
             }
         }catch(PDOException $e){
             
-            $conn->rollback();
+            if($conn->inTransaction()){
+                $conn->rollback();
+            }
             throw $e;
         }
     }

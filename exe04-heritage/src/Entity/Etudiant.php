@@ -7,10 +7,20 @@
  */
 namespace ISL\Entity;
 class Etudiant extends Personne{
+    private $personneId;
     private $coursSuivis;
     private $niveau;
     private $dateInscription;
-    public function getCoursSuivis() {
+    
+    public function getPersonneId() {
+        return $this->personneId;
+    }
+
+    public function setPersonneId($personneId) {
+        $this->personneId = $personneId;
+    }
+
+        public function getCoursSuivis() {
         return $this->coursSuivis;
     }
 
@@ -33,6 +43,20 @@ class Etudiant extends Personne{
     public function setDateInscription(\DateTime $dateInscription) {
         $this->dateInscription = $dateInscription;
     }
-
+    
+    public function __toString() {
+        $format="%s %s \n %s %s \n %s \n %s \n %s \n %s \n %s";
+        $nom=  $this->getNom();
+        $prenom=  $this->getPrenom();
+        $adresse=  $this->getAdresse();
+        $cp= $this->getCodePostal();
+        $pays=  $this->getPays();
+        $societe=  $this->getSociete();
+        $coursSuivi=  $this->getCoursSuivis();
+        $niveau=  $this->getNiveau();
+        $dateInscription=  $this->getDateInscription();
+        
+        return sprintf($format, $nom, $prenom, $adresse, $cp, $pays, $societe, $coursSuivi, $niveau, $dateInscription);
+    }
 
 }

@@ -138,7 +138,10 @@ class AdresseManager{
     }
     
     public function updateAdresse(Adresse $data) {
+        
         $conn = $this->getConnection();
+        
+        
         try{
             //$conn->beginTransation(); Erreur rechercher son namespace
             //Requête preparée

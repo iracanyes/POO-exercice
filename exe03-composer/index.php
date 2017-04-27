@@ -94,7 +94,7 @@ and open the template in the editor.
                             <input type="radio" name='crud' value='update' /> Mise à jour d'une personne via son ID <br />
                             <input type="radio" name='crud' value='delete' /> Supprimer une personne via son ID <br />
                         </label>
-                        <label for="adresseId">
+                        <label for="personId">
                             Personne ID:
                             <input type="number" id="personId" name="personId" min='0' max='10'  value="<?php echo $personId;?>"/>
                         </label>
@@ -138,9 +138,10 @@ and open the template in the editor.
                 <input type="submit" name="submit" value="Envoyer" />
             </form>
             <table>
-                <caption>Groupe aléatoire</caption>
+                <caption>Groupe aléatoire DB</caption>
                 <thead>
                     <tr>
+                        <th>ID personne</th>
                         <th>Nom</th>
                         <th>Prénom</th>
                         <th>Adresse</th>
@@ -152,10 +153,15 @@ and open the template in the editor.
                 </thead>
                 <tbody>
                     <?php 
-                    var_dump($groupeDB);
+                    if(DEBUG){
+                        echo "\n Groupe DB: ";
+                        var_dump($groupeDB);
+                    }
+                    
                     if(isset($groupeDB)){
                         foreach($groupeDB as $key=>$value){
                             echo "<tr>"
+                                    . "<td>".$value["personne_id"]."</td>"
                                     . "<td>".$value["nom"]."</td>"
                                     . "<td>".$value["prenom"]."</td>"
                                     . "<td>".$value["adresse"]."</td>"

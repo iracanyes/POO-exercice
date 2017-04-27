@@ -36,5 +36,19 @@ class Enseignant extends Personne{
         $this->anciennete = $anciennete;
     }
 
+    public function __toString() {
+        $format="%s %s \n %s %s \n %s \n %s \n %s \n %s \n %s";
+        $nom=  $this->getNom();
+        $prenom=  $this->getPrenom();
+        $adresse=  $this->getAdresse();
+        $cp= $this->getCodePostal();
+        $pays=  $this->getPays();
+        $societe=  $this->getSociete();
+        $coursDonnee=  $this->getCoursSuivis();
+        $dateEntreeService=  $this->getNiveau();
+        $anciennete=  $this->getDateInscription();
+        
+        return sprintf($format, $nom, $prenom, $adresse, $cp, $pays, $societe, $coursDonnee, $dateEntreeService, $anciennete);
+    }
 
 }

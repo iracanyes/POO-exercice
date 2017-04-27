@@ -7,12 +7,12 @@
  */
 namespace ISL\Entity;
 class Personne{
-    private $nom;
-    private $prenom;
-    private $adresse;
-    private $codePostal;
-    private $pays;
-    private $societe;
+    protected $nom;
+    protected $prenom;
+    protected $adresse;
+    protected $codePostal;
+    protected $pays;
+    protected $societe;
     
     public function getNom() {
         return $this->nom;
@@ -60,6 +60,19 @@ class Personne{
 
     public function setSociete($societe) {
         $this->societe = $societe;
+    }
+    
+    public function __toString() {
+        $format="%s %s \n %s \n %s %s \n %s \n %s ";
+        $nom = $this->getNom();
+        $prenom=  $this->getPrenom();
+        $adresse= $this->getAdresse();
+        $cp=  $this->getCodePostal();
+        $pays = $this->getPays();
+        $societe= $this->getSociete();
+        echo sprintf($format, $nom, $prenom, $adresse, $cp, $pays,$societe);
+        echo "<br />";
+        echo $nom." ".$prenom.",<br />".$adresse."<br />".$cp."<br />".$pays."<br />".$societe;
     }
 
 

@@ -9,6 +9,7 @@
 namespace ISL\Manager;
 
 use ISL\Entity\Personne;
+use Faker\Factory;
 
 class PersonneManager{
     private $faker;
@@ -32,8 +33,10 @@ class PersonneManager{
     public function getFaker(){
         return $this->faker;
     }
-    static public function generate(\Faker\Generator $faker,$nbr=1){
+    static public function generate($nbr=1){
         $personnes=[];
+        
+        $faker= Factory::create("fr_BE");
         
         for($i =0; $i <=$nbr; $i++){
             $p= new Personne();

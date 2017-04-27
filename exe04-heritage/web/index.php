@@ -5,12 +5,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-require_once __DIR__."/vendor/autoload.php";
-use ISL\Manager\PersonneManager;
+require_once '../controler/home.php';
 
 
-$faker = Faker\Factory::create("fr_BE");
-$nbre= isset($_POST["nombre"]) ? $_POST["nombre"] : 1;
 
 ?>
 <!DOCTYPE html>
@@ -24,29 +21,36 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <title></title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css" />
     </head>
     <body>
         <div id="main">
             <h1>Exercice 4 - Héritage</h1>
             <form action="#" method="POST" name="">
                 <label for="nombre">
-                    Nombre de personne:
+                    Combien de personne aléatoire vous désirez:
                     <input type="range" min="1" max="20" name="nombre" value=""/>
                 </label>
-                
-                <input type="submit" name="submit" value="Envoyer" />
+                <br />
+                <input type="submit" name="submit" value="Lancer" />
             </form>
             <pre>
                 <?php
-                var_dump(PersonneManager::generate($faker,$nbre));
+                if(DEBUG){
+                    isset($groupe) ? var_dump($groupe) : "";
+                }
+                
                 ?>
             </pre>
             <pre>
-                <?php var_dump($faker);?>
+                <?php //var_dump($faker);?>
             </pre>
-            <table>
+            <?php 
+            
+                //tableEnseignant($data);
                 
-            </table>
+                //tableEtudiant($data);
+            ?>
                 
             
             
