@@ -1,0 +1,26 @@
+{
+  "name": "mvc_objet",
+  "authors": [
+    "Greg Berger <greg@3kd.be>"
+  ],
+  "description": "a simple mvc in oop",
+  "main": "",
+  "moduleType": [
+    "es6",
+    "globals",
+    "node"
+  ],
+  "license": "wtfpl",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6"
+  }
+}

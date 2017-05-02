@@ -1,0 +1,17 @@
+{
+    "name": "gberger/mvc_objet",
+    "description": "A simple mvc example using OOP",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Greg Berger",
+            "email": "greg@3kd.be"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "ISL\\MvcExample\\": "src/"
+        }
+    },
+    "require": {}
+}
